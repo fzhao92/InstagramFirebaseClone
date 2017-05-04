@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>907225364449-3qh5itukcbdrbau9igff2usdekuu97s8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.907225364449-3qh5itukcbdrbau9igff2usdekuu97s8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA6N1pkbYx7j_t8gskJ1dEwEHXKSSxeFZY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>907225364449</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ForrestApps.InstagramFirebaseClone</string>
+	<key>PROJECT_ID</key>
+	<string>instagramfirebaseclone</string>
+	<key>STORAGE_BUCKET</key>
+	<string>instagramfirebaseclone.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:907225364449:ios:b2a556f994438b3c</string>
+	<key>DATABASE_URL</key>
+	<string>https://instagramfirebaseclone.firebaseio.com</string>
+</dict>
+</plist>
