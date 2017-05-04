@@ -9,14 +9,16 @@
 import UIKit
 import SnapKit
 import FirebaseAuth
+import FirebaseDatabase
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     lazy var plusPhotoButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal), for: .normal)
         button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(handlePlusPhoto), for: .touchUpInside)
         return button
     }()
     
@@ -66,6 +68,27 @@ class ViewController: UIViewController {
         return button
     }()
     
+    func handlePlusPhoto() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            plusPhotoButton.setImage(editedImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            plusPhotoButton.setImage(originalImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        plusPhotoButton.layer.cornerRadius = plusPhotoButton.frame.width/2
+        plusPhotoButton.layer.masksToBounds = true
+        plusPhotoButton.layer.borderWidth = 3
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
     func handleTextInputChange() {
         let isFormValid = emailTextField.text?.characters.count ?? 0 > 0 &&
                             usernameTextField.text?.characters.count ?? 0 > 0 &&
@@ -92,7 +115,21 @@ class ViewController: UIViewController {
                 print("Failed to create user:", error)
             }
             
-            print("Sucessfully created user:", user?.uid ?? "")
+            print("Successfully created user:", user?.uid ?? "")
+            
+            guard let uid = user?.uid else { return }
+            
+            let usernameValues = ["username": username]
+            let values = [uid: usernameValues]
+            
+            FIRDatabase.database().reference().child("users").updateChildValues(values, withCompletionBlock: { (error, ref) in
+                if let error = error {
+                    print("Failed to save user info into db:", error)
+                }
+                
+                print("Successfully saved user info to db")
+            })
+            
         })
     }
 
