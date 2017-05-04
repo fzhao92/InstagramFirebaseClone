@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseStorage
 
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -117,19 +118,31 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
             print("Successfully created user:", user?.uid ?? "")
             
-            guard let uid = user?.uid else { return }
+            guard let image = self.plusPhotoButton.imageView?.image else { return }
             
-            let usernameValues = ["username": username]
-            let values = [uid: usernameValues]
+            guard let uploadData = UIImageJPEGRepresentation(image, 0.3) else { return }
             
-            FIRDatabase.database().reference().child("users").updateChildValues(values, withCompletionBlock: { (error, ref) in
+            let filename = NSUUID().uuidString
+            FIRStorage.storage().reference().child("profile_images").child(filename).put(uploadData, metadata: nil, completion: { (metadata, error) in
                 if let error = error {
-                    print("Failed to save user info into db:", error)
+                    print("Failed to upload profile image:", error)
                 }
+                guard let profileImageUrl = metadata?.downloadURL()?.absoluteString else { return }
+                print("Successfully uploaded profile image:", profileImageUrl)
                 
-                print("Successfully saved user info to db")
+                guard let uid = user?.uid else { return }
+                
+                let dictionaryValues = ["username": username, "profileImageUrl": profileImageUrl]
+                let values = [uid: dictionaryValues]
+                
+                FIRDatabase.database().reference().child("users").updateChildValues(values, withCompletionBlock: { (error, ref) in
+                    if let error = error {
+                        print("Failed to save user info into db:", error)
+                    }
+                    
+                    print("Successfully saved user info to db")
+                })
             })
-            
         })
     }
 
